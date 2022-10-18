@@ -1,3 +1,4 @@
+
 package com.ankit.chatbackend.controller;
 
 import com.ankit.chatbackend.model.Message;
@@ -15,14 +16,16 @@ public class ChatController {
     private SimpMessagingTemplate simpMessagingTemplate; // dynamic topics for private messages 1 : 1 chats
 
 
-    @MessageMapping("/message") // /app/message
+    @MessageMapping("/message")  // /app/message
     @SendTo("/chatroom/public") // topic chatroom
     public Message receivePublicMessage(@Payload Message message){
         return message;
     }
 
+    @MessageMapping("/private-message")
     public Message receivePrivateMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message); // /user/UserName/private/
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+//        System.out.println(message.toString());
         return message;
     }
 }
